@@ -1,3 +1,5 @@
+package ydb.jimmer.dialect;
+
 import org.babyfish.jimmer.sql.ast.impl.Ast;
 import org.babyfish.jimmer.sql.ast.impl.Literals;
 import org.babyfish.jimmer.sql.ast.impl.query.ForUpdate;
@@ -20,7 +22,7 @@ import java.time.OffsetTime;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-public class YDBDialect extends DefaultDialect {
+public class YdbDialect extends DefaultDialect {
     @Override
     public String sqlType(Class<?> elementType) {
         if (elementType == String.class) {

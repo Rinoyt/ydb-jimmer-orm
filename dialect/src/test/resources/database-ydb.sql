@@ -10,5 +10,3 @@ CREATE TABLE student (
     group Uuid,
     PRIMARY KEY (id)
 );
-
-COMMIT;

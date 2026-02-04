@@ -12,6 +12,10 @@ public class SelectTest extends YdbTest {
 
         StudentTable table = StudentTable.$;
 
-
+        executeAndExpect(
+                getYqlClient()
+                        .createQuery(table)
+                        .select(table)
+        );
     }
 }

@@ -15,7 +15,12 @@ public class SelectTest extends YdbTest {
         executeAndExpect(
                 getYqlClient()
                         .createQuery(table)
-                        .select(table)
+                        .select(table),
+                cxt -> {
+                    cxt.sql(
+                            "select tb_1_.id, tb_1_.name, tb_1_.group " +
+                                    "from student tb_1_");
+                }
         );
     }
 }

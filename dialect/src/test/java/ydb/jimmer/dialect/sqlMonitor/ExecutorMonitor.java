@@ -15,11 +15,11 @@ import java.util.List;
 public class ExecutorMonitor implements Executor {
     private final Executor executor = DefaultExecutor.INSTANCE;
 
-    private final List<ExecutorLog> executorLogs =  new ArrayList<>();
+    private final List<QueryLog> queryLogs =  new ArrayList<>();
 
     @Override
     public <R> R execute(@NotNull Args<R> args) {
-        executorLogs.add(ExecutorLog.simple(args.sql, args.purpose, args.variables));
+        queryLogs.add(QueryLog.simple(args.sql, args.purpose, args.variables));
         return executor.execute(args);
     }
 
@@ -34,7 +34,7 @@ public class ExecutorMonitor implements Executor {
         return executor.executeBatch(con, sql, generatedIdProp, purpose, sqlClient);
     }
 
-    public List<ExecutorLog> getLogs() {
-        return executorLogs;
+    public List<QueryLog> getLogs() {
+        return queryLogs;
     }
 }

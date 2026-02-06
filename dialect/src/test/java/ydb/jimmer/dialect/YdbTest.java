@@ -10,22 +10,20 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import tech.ydb.test.junit5.YdbHelperExtension;
-import ydb.jimmer.dialect.sqlMonitor.ExecutorLog;
 import ydb.jimmer.dialect.sqlMonitor.ExecutorMonitor;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class YdbTest {
     @RegisterExtension
     private static final YdbHelperExtension ydb = new YdbHelperExtension();
 
-    private static final Executor executor = new ExecutorMonitor();
+    private static final ExecutorMonitor executor = new ExecutorMonitor();
     private static final JSqlClient yqlClient;
 
     static {
@@ -93,9 +91,9 @@ public class YdbTest {
         return jdbc.toString();
     }
 
-    public <R> void executeAndExpect(TypedRootQuery<R> query) {
+    public <R> void executeAndExpect(TypedRootQuery<R> query, Consumer<QueryTestContext> block) {
         List<R> rows = connectAndExecute(true, query);
-        System.out.println(rows);
+        block.accept(new QueryTestContext(executor.getLogs(), rows));
     }
 
     protected <R> List<R> connectAndExecute(boolean rollback, TypedRootQuery<R> query) {

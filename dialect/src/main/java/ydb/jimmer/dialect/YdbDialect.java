@@ -189,6 +189,18 @@ public class YdbDialect extends DefaultDialect {
     }
 
     @Override
+    public String transCacheOperatorTableDDL() {
+        return "CREATE TABLE JIMMER_TRANS_CACHE_OPERATOR(\n" +
+                "\tID Uuid NOT NULL,\n" +
+                "\tIMMUTABLE_TYPE String,\n" +
+                "\tIMMUTABLE_PROP String,\n" +
+                "\tCACHE_KEY String NOT NULL,\n" +
+                "\tREASON String,\n" +
+                "\tPRIMARY KEY(ID)\n" +
+                ")";
+    }
+
+    @Override
     public void renderLPad(AbstractSqlBuilder<?> builder, int currentPrecedence, Ast expression, Ast length, Ast padString) {
         throw new UnsupportedOperationException(
                 "The current dialect \"" + getClass().getName() + "\" does not support LPad."

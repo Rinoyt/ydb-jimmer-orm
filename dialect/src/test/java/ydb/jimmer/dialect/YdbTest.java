@@ -2,7 +2,6 @@ package ydb.jimmer.dialect;
 
 import org.babyfish.jimmer.sql.JSqlClient;
 import org.babyfish.jimmer.sql.ast.query.TypedRootQuery;
-import org.babyfish.jimmer.sql.runtime.Executor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.core.io.UrlResource;
@@ -10,6 +9,7 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import tech.ydb.test.junit5.YdbHelperExtension;
+import ydb.jimmer.client.YdbDialect;
 import ydb.jimmer.dialect.sqlMonitor.ExecutorMonitor;
 
 import java.net.URL;

@@ -12,7 +12,7 @@
     <properties>
         <jimmer.version>0.9.117</jimmer.version>
         <spring.version>7.0.2</spring.version>
-        <maven.compiler.release>25</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
     <dependencies>

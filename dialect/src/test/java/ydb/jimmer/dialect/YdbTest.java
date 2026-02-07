@@ -45,7 +45,7 @@ public class YdbTest {
             }
             try {
                 executeYqlScript(connection, dropTablesUrl);
-            } catch (ScriptException _) {
+            } catch (ScriptException e) {
                 //
             }
 

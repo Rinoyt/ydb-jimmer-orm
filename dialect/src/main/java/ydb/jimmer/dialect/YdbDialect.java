@@ -190,14 +190,15 @@ public class YdbDialect extends DefaultDialect {
 
     @Override
     public String transCacheOperatorTableDDL() {
-        return "CREATE TABLE JIMMER_TRANS_CACHE_OPERATOR(\n" +
-                "\tID Uuid NOT NULL,\n" +
-                "\tIMMUTABLE_TYPE String,\n" +
-                "\tIMMUTABLE_PROP String,\n" +
-                "\tCACHE_KEY String NOT NULL,\n" +
-                "\tREASON String,\n" +
-                "\tPRIMARY KEY(ID)\n" +
-                ")";
+        return """
+                CREATE TABLE JIMMER_TRANS_CACHE_OPERATOR(
+                \tID Uuid NOT NULL,
+                \tIMMUTABLE_TYPE String,
+                \tIMMUTABLE_PROP String,
+                \tCACHE_KEY String NOT NULL,
+                \tREASON String,
+                \tPRIMARY KEY(ID)
+                )""";
     }
 
     @Override

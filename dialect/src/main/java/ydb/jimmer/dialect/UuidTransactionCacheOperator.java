@@ -1,4 +1,4 @@
-package ydb.jimmer.client;
+package ydb.jimmer.dialect;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

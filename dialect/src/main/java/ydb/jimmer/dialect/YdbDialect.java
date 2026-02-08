@@ -1,4 +1,4 @@
-package ydb.jimmer.client;
+package ydb.jimmer.dialect;
 
 import org.babyfish.jimmer.sql.ast.impl.Ast;
 import org.babyfish.jimmer.sql.ast.impl.Literals;

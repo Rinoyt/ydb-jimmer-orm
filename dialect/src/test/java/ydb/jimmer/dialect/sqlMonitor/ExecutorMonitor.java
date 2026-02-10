@@ -15,7 +15,7 @@ import java.util.List;
 public class ExecutorMonitor implements Executor {
     private final Executor executor = DefaultExecutor.INSTANCE;
 
-    private final List<QueryLog> queryLogs =  new ArrayList<>();
+    private List<QueryLog> queryLogs = new ArrayList<>();
 
     @Override
     public <R> R execute(@NotNull Args<R> args) {
@@ -35,6 +35,8 @@ public class ExecutorMonitor implements Executor {
     }
 
     public List<QueryLog> getLogs() {
-        return queryLogs;
+        List<QueryLog> tmp = queryLogs;
+        queryLogs = new ArrayList<>();
+        return tmp;
     }
 }

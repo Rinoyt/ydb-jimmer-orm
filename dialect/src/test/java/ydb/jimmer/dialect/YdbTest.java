@@ -15,6 +15,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -53,12 +54,6 @@ public class YdbTest {
                 throw new IllegalStateException("Cannot load 'database-ydb.sql'");
             }
             executeYqlScript(connection, url);
-//            try (PreparedStatement select = connection
-//                    .prepareStatement("select count(1) as cnt from group")) {
-//                ResultSet rs = select.executeQuery();
-//                rs.next();
-//                Assertions.assertEquals(0, rs.getLong("cnt"));
-//            }
         } catch (SQLException e) {
             Assertions.fail("Database threw an exception: " + e.getMessage());
         }
@@ -110,5 +105,15 @@ public class YdbTest {
         }
 
         return null;
+    }
+
+    protected void executeSql(String sql) {
+        try (Connection connection = DriverManager.getConnection(getJdbcURL())) {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute(sql);
+            }
+        } catch (SQLException e) {
+            Assertions.fail("Database threw an exception: " + e.getMessage());
+        }
     }
 }

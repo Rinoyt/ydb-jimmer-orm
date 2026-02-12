@@ -1,4 +1,4 @@
-package ydb.jimmer.dialect.model.type;
+package ydb.jimmer.dialect.model.type.ydbFloat;
 
 import org.babyfish.jimmer.sql.Column;
 import org.babyfish.jimmer.sql.Entity;
@@ -6,12 +6,12 @@ import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Table;
 
 @Entity
-@Table(name = "ydb_int64")
-public interface YdbInt64 {
+@Table(name = "ydb_float_class")
+public interface YdbFloatClass {
     @Id
     @Column(name = "id")
     int getId();
 
     @Column(name = "value")
-    long value();
+    Float value();
 }

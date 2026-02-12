@@ -3,21 +3,34 @@ package ydb.jimmer.dialect;
 import org.babyfish.jimmer.sql.ast.PropExpression;
 import org.babyfish.jimmer.sql.ast.table.spi.AbstractTypedTable;
 import org.junit.jupiter.api.Test;
-import ydb.jimmer.dialect.model.type.YdbBoolTable;
-import ydb.jimmer.dialect.model.type.YdbDate32Table;
-import ydb.jimmer.dialect.model.type.YdbDateTime64Table;
-import ydb.jimmer.dialect.model.type.YdbDecimalTable;
-import ydb.jimmer.dialect.model.type.YdbDoubleTable;
-import ydb.jimmer.dialect.model.type.YdbFloatTable;
-import ydb.jimmer.dialect.model.type.YdbInt16Table;
-import ydb.jimmer.dialect.model.type.YdbInt32Table;
-import ydb.jimmer.dialect.model.type.YdbInt64Table;
-import ydb.jimmer.dialect.model.type.YdbInt8Table;
-import ydb.jimmer.dialect.model.type.YdbInterval64Table;
-import ydb.jimmer.dialect.model.type.YdbStringTable;
-import ydb.jimmer.dialect.model.type.YdbTimestamp64Table;
-import ydb.jimmer.dialect.model.type.YdbUtf8Table;
-import ydb.jimmer.dialect.model.type.YdbUuidTable;
+import ydb.jimmer.dialect.model.type.ydbBool.YdbBooleanClassTable;
+import ydb.jimmer.dialect.model.type.ydbBool.YdbBooleanTable;
+import ydb.jimmer.dialect.model.type.ydbDate32.YdbDateTable;
+import ydb.jimmer.dialect.model.type.ydbDate32.YdbLocalDateTable;
+import ydb.jimmer.dialect.model.type.ydbDatetime64.YdbLocalDateTimeTable;
+import ydb.jimmer.dialect.model.type.ydbDecimal.YdbBigDecimalTable;
+import ydb.jimmer.dialect.model.type.ydbDouble.YdbDoubleClassTable;
+import ydb.jimmer.dialect.model.type.ydbDouble.YdbDoubleTable;
+import ydb.jimmer.dialect.model.type.ydbFloat.YdbFloatClassTable;
+import ydb.jimmer.dialect.model.type.ydbFloat.YdbFloatTable;
+import ydb.jimmer.dialect.model.type.ydbInt16.YdbShortClassTable;
+import ydb.jimmer.dialect.model.type.ydbInt16.YdbShortTable;
+import ydb.jimmer.dialect.model.type.ydbInt32.YdbIntTable;
+import ydb.jimmer.dialect.model.type.ydbInt32.YdbIntegerTable;
+import ydb.jimmer.dialect.model.type.ydbInt32.YdbLocalTimeTable;
+import ydb.jimmer.dialect.model.type.ydbInt32.YdbTimeTable;
+import ydb.jimmer.dialect.model.type.ydbInt64.YdbBigIntegerTable;
+import ydb.jimmer.dialect.model.type.ydbInt64.YdbLongClassTable;
+import ydb.jimmer.dialect.model.type.ydbInt64.YdbLongTable;
+import ydb.jimmer.dialect.model.type.ydbInt8.YdbByteClassTable;
+import ydb.jimmer.dialect.model.type.ydbInt8.YdbByteTable;
+import ydb.jimmer.dialect.model.type.ydbInterval64.YdbDurationTable;
+import ydb.jimmer.dialect.model.type.ydbString.YdbByteArrayTable;
+import ydb.jimmer.dialect.model.type.ydbTimestamp64.YdbInstantTable;
+import ydb.jimmer.dialect.model.type.ydbTimestamp64.YdbTimestampTable;
+import ydb.jimmer.dialect.model.type.ydbTimestamp64.YdbUtilDateTable;
+import ydb.jimmer.dialect.model.type.ydbUtf8.YdbStringTable;
+import ydb.jimmer.dialect.model.type.ydbUuid.YdbUuidTable;
 
 public class DataTypeTest extends YdbTest {
     private void createTable(String tableName, String typeName) {
@@ -89,17 +102,29 @@ public class DataTypeTest extends YdbTest {
     public void boolTest() {
         String[] valuesToInsert = new String[]{"false", "true"};
         String[] expectedValues = new String[]{"false", "true"};
-        typeTest("ydb_test", "Bool",
-                YdbBoolTable.$, YdbBoolTable.$.value(),
+
+        typeTest("ydb_boolean", "Bool",
+                YdbBooleanTable.$, YdbBooleanTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_boolean_class", "Bool",
+                YdbBooleanClassTable.$, YdbBooleanClassTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
     @Test
     public void date32Test() {
         String[] valuesToInsert = new String[]{"Date32(\"144169-01-01\")"};
-        String[] expectedValues = new String[]{"\"+144169-01-01\""};
-        typeTest("ydb_date32", "Date32",
-                YdbDate32Table.$, YdbDate32Table.$.value(),
+        String[] expectedValues = new String[]{"\"4169-01-01\""};
+
+        typeTest("ydb_date", "Date32",
+                YdbDateTable.$, YdbDateTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        expectedValues = new String[]{"\"+144169-01-01\""};
+
+        typeTest("ydb_local_date", "Date32",
+                YdbLocalDateTable.$, YdbLocalDateTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -107,8 +132,9 @@ public class DataTypeTest extends YdbTest {
     public void dateTime64Test() {
         String[] valuesToInsert = new String[]{"DateTime64(\"2017-11-27T13:24:00Z\")"};
         String[] expectedValues = new String[]{"\"2017-11-27T13:24:00\""};
-        typeTest("ydb_dateTime64", "DateTime64",
-                YdbDateTime64Table.$, YdbDateTime64Table.$.value(),
+
+        typeTest("ydb_local_date_time", "DateTime64",
+                YdbLocalDateTimeTable.$, YdbLocalDateTimeTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -116,8 +142,9 @@ public class DataTypeTest extends YdbTest {
     public void decimalTest() {
         String[] valuesToInsert = new String[]{"Decimal(\"1.23\", 22, 9)"};
         String[] expectedValues = new String[]{"1.230000000"};
-        typeTest("ydb_decimal", "Decimal(22, 9)",
-                YdbDecimalTable.$, YdbDecimalTable.$.value(),
+
+        typeTest("ydb_big_decimal", "Decimal(22, 9)",
+                YdbBigDecimalTable.$, YdbBigDecimalTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -125,8 +152,13 @@ public class DataTypeTest extends YdbTest {
     public void doubleTest() {
         String[] valuesToInsert = new String[]{"Double(\"1.23\")"};
         String[] expectedValues = new String[]{"1.23"};
+
         typeTest("ydb_double", "Double",
                 YdbDoubleTable.$, YdbDoubleTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_double_class", "Double",
+                YdbDoubleClassTable.$, YdbDoubleClassTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -134,8 +166,13 @@ public class DataTypeTest extends YdbTest {
     public void floatTest() {
         String[] valuesToInsert = new String[]{"Float(\"1.23\")"};
         String[] expectedValues = new String[]{"1.23"};
+
         typeTest("ydb_float", "Float",
                 YdbFloatTable.$, YdbFloatTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_float_class", "Float",
+                YdbFloatClassTable.$, YdbFloatClassTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -143,8 +180,13 @@ public class DataTypeTest extends YdbTest {
     public void int8Test() {
         String[] valuesToInsert = new String[]{"-1", "0", "10"};
         String[] expectedValues = new String[]{"-1", "0", "10"};
-        typeTest("ydb_int8", "Int8",
-                YdbInt8Table.$, YdbInt8Table.$.value(),
+
+        typeTest("ydb_byte", "Int8",
+                YdbByteTable.$, YdbByteTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_byte_class", "Int8",
+                YdbByteClassTable.$, YdbByteClassTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -152,8 +194,13 @@ public class DataTypeTest extends YdbTest {
     public void int16Test() {
         String[] valuesToInsert = new String[]{"-1", "0", "10"};
         String[] expectedValues = new String[]{"-1", "0", "10"};
-        typeTest("ydb_int16", "Int16",
-                YdbInt16Table.$, YdbInt16Table.$.value(),
+
+        typeTest("ydb_short", "Int16",
+                YdbShortTable.$, YdbShortTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_short_class", "Int16",
+                YdbShortClassTable.$, YdbShortClassTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -161,8 +208,26 @@ public class DataTypeTest extends YdbTest {
     public void int32Test() {
         String[] valuesToInsert = new String[]{"-1", "0", "10"};
         String[] expectedValues = new String[]{"-1", "0", "10"};
-        typeTest("ydb_int32", "Int32",
-                YdbInt32Table.$, YdbInt32Table.$.value(),
+
+        typeTest("ydb_int", "Int32",
+                YdbIntTable.$, YdbIntTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_integer", "Int32",
+                YdbIntegerTable.$, YdbIntegerTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        expectedValues = new String[]{"\"02:59:59.999\"", "\"03:00:00\"", "\"03:00:00.01\""};
+
+        typeTest("ydb_local_time", "Int32",
+                YdbLocalTimeTable.$, YdbLocalTimeTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        valuesToInsert = new String[]{"0", "10"};
+        expectedValues = new String[]{"\"00:00:00\"", "\"00:00:10\""};
+
+        typeTest("ydb_time", "Int32",
+                YdbTimeTable.$, YdbTimeTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -170,8 +235,17 @@ public class DataTypeTest extends YdbTest {
     public void int64Test() {
         String[] valuesToInsert = new String[]{"-1", "0", "10"};
         String[] expectedValues = new String[]{"-1", "0", "10"};
-        typeTest("ydb_int64", "Int64",
-                YdbInt64Table.$, YdbInt64Table.$.value(),
+
+        typeTest("ydb_big_integer", "Int64",
+                YdbBigIntegerTable.$, YdbBigIntegerTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_long", "Int64",
+                YdbLongTable.$, YdbLongTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_long_class", "Int64",
+                YdbLongClassTable.$, YdbLongClassTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -179,8 +253,9 @@ public class DataTypeTest extends YdbTest {
     public void interval64Test() {
         String[] valuesToInsert = new String[]{"Interval(\"P0DT0H0M0.567890S\")"};
         String[] expectedValues = new String[]{"0.567890000"};
-        typeTest("ydb_interval64", "Interval64",
-                YdbInterval64Table.$, YdbInterval64Table.$.value(),
+
+        typeTest("ydb_duration", "Interval64",
+                YdbDurationTable.$, YdbDurationTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -188,8 +263,9 @@ public class DataTypeTest extends YdbTest {
     public void stringTest() {
         String[] valuesToInsert = new String[]{"\"0\"", "\"string\""};
         String[] expectedValues = new String[]{"\"MA==\"", "\"c3RyaW5n\""};
-        typeTest("ydb_string", "String",
-                YdbStringTable.$, YdbStringTable.$.value(),
+
+        typeTest("ydb_byte_array", "String",
+                YdbByteArrayTable.$, YdbByteArrayTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -197,8 +273,19 @@ public class DataTypeTest extends YdbTest {
     public void timestamp64Test() {
         String[] valuesToInsert = new String[]{"Timestamp64(\"2017-11-27T13:24:00.123456Z\")"};
         String[] expectedValues = new String[]{"\"2017-11-27T13:24:00.123456Z\""};
-        typeTest("ydb_timestamp64", "Timestamp64",
-                YdbTimestamp64Table.$, YdbTimestamp64Table.$.value(),
+
+        typeTest("ydb_instant", "Timestamp64",
+                YdbInstantTable.$, YdbInstantTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        expectedValues = new String[]{"\"2017-11-27\""};
+
+        typeTest("ydb_timestamp", "Timestamp64",
+                YdbTimestampTable.$, YdbTimestampTable.$.value(),
+                valuesToInsert, expectedValues);
+
+        typeTest("ydb_util_date", "Timestamp64",
+                YdbUtilDateTable.$, YdbUtilDateTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -206,8 +293,9 @@ public class DataTypeTest extends YdbTest {
     public void utf8Test() {
         String[] valuesToInsert = new String[]{"\"0\"", "\"string\""};
         String[] expectedValues = new String[]{"\"0\"", "\"string\""};
-        typeTest("ydb_utf8", "Utf8",
-                YdbUtf8Table.$, YdbUtf8Table.$.value(),
+
+        typeTest("ydb_string", "Utf8",
+                YdbStringTable.$, YdbStringTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 
@@ -219,6 +307,7 @@ public class DataTypeTest extends YdbTest {
         String[] expectedValues = new String[]{
                 "\"9e197d65-1914-4d57-a65f-77a52a06baa7\"",
                 "\"8e0f2cf4-4656-4d73-970e-a18be9ead78b\""};
+
         typeTest("ydb_uuid", "Uuid",
                 YdbUuidTable.$, YdbUuidTable.$.value(),
                 valuesToInsert, expectedValues);

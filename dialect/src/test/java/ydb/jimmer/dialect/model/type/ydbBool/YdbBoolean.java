@@ -1,19 +1,17 @@
-package ydb.jimmer.dialect.model.type;
+package ydb.jimmer.dialect.model.type.ydbBool;
 
 import org.babyfish.jimmer.sql.Column;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Table;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "ydb_date32")
-public interface YdbDate32 {
+@Table(name = "ydb_boolean")
+public interface YdbBoolean {
     @Id
     @Column(name = "id")
     int getId();
 
     @Column(name = "value")
-    LocalDate value();
+    boolean value();
 }

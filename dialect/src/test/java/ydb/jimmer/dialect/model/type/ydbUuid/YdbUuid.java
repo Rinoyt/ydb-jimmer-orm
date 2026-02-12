@@ -1,4 +1,4 @@
-package ydb.jimmer.dialect.model.type;
+package ydb.jimmer.dialect.model.type.ydbUuid;
 
 import org.babyfish.jimmer.sql.Column;
 import org.babyfish.jimmer.sql.Entity;

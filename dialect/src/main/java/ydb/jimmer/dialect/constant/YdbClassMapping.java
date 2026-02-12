@@ -35,7 +35,7 @@ public final class YdbClassMapping {
         add("Utf8", YdbJdbcTypes.TEXT, String.class);
         add("String", YdbJdbcTypes.BYTES, byte[].class);
 
-        add("Uuid",  YdbJdbcTypes.UUID, UUID.class);
+        add("Uuid", YdbJdbcTypes.UUID, UUID.class);
 
         add("Date32", YdbJdbcTypes.DATE32, Date.class, LocalDate.class);
         add("Datetime64", YdbJdbcTypes.DATETIME64, LocalDateTime.class);

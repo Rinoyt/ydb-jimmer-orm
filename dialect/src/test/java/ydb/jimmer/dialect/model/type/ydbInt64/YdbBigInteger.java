@@ -1,19 +1,19 @@
-package ydb.jimmer.dialect.model.type;
+package ydb.jimmer.dialect.model.type.ydbInt64;
 
 import org.babyfish.jimmer.sql.Column;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Table;
 
-import java.time.Instant;
+import java.math.BigInteger;
 
 @Entity
-@Table(name = "ydb_timestamp64")
-public interface YdbTimestamp64 {
+@Table(name = "ydb_big_integer")
+public interface YdbBigInteger {
     @Id
     @Column(name = "id")
     int getId();
 
     @Column(name = "value")
-    Instant value();
+    BigInteger value();
 }

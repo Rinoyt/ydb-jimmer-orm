@@ -7,8 +7,6 @@ import org.babyfish.jimmer.sql.ast.impl.render.AbstractSqlBuilder;
 import org.babyfish.jimmer.sql.dialect.DefaultDialect;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 
 import static ydb.jimmer.dialect.constant.YdbClassMapping.classToJdbcType;
@@ -37,16 +35,6 @@ public class YdbDialect extends DefaultDialect {
     @Override
     public boolean isUpdateAliasSupported() {
         return false;
-    }
-
-    @Override
-    public boolean isArraySupported() {
-        return true;
-    }
-
-    @Override
-    public <T> T[] getArray(ResultSet rs, int col, Class<T[]> arrayType) throws SQLException {
-        return rs.getObject(col, arrayType);
     }
 
     @Override

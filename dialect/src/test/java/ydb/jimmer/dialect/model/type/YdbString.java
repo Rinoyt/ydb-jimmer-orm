@@ -13,5 +13,5 @@ public interface YdbString {
     int getId();
 
     @Column(name = "value")
-    String value();
+    byte[] value();
 }

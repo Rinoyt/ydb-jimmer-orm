@@ -4,15 +4,16 @@ import org.babyfish.jimmer.sql.Column;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Table;
-import org.json.JSONObject;
+
+import java.time.Duration;
 
 @Entity
-@Table(name = "ydb_json")
-public interface YdbJson {
+@Table(name = "ydb_interval64")
+public interface YdbInterval64 {
     @Id
     @Column(name = "id")
     int getId();
 
     @Column(name = "value")
-    JSONObject value();
+    Duration value();
 }

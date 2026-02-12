@@ -9,6 +9,7 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import tech.ydb.test.junit5.YdbHelperExtension;
+import ydb.jimmer.dialect.scalar.DurationProvider;
 import ydb.jimmer.dialect.sqlMonitor.ExecutorMonitor;
 
 import java.net.URL;
@@ -30,6 +31,7 @@ public class YdbTest {
         yqlClient = JSqlClient.newBuilder()
                 .setExecutor(executor)
                 .setDialect(new YdbDialect())
+                .addScalarProvider(new DurationProvider())
                 .build();
     }
 

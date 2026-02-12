@@ -5,15 +5,13 @@ import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Table;
 
-import java.sql.Date;
-
 @Entity
-@Table(name = "ydb_date")
-public interface YdbDate {
+@Table(name = "ydb_utf8")
+public interface YdbUtf8 {
     @Id
     @Column(name = "id")
     int getId();
 
     @Column(name = "value")
-    Date value();
+    String value();
 }

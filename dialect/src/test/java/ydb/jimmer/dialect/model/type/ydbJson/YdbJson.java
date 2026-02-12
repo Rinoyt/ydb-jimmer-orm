@@ -1,4 +1,4 @@
-package ydb.jimmer.dialect.model.type.json;
+package ydb.jimmer.dialect.model.type.ydbJson;
 
 import org.babyfish.jimmer.sql.Column;
 import org.babyfish.jimmer.sql.Entity;

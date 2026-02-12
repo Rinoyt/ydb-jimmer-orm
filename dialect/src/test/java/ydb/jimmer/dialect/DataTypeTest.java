@@ -3,7 +3,7 @@ package ydb.jimmer.dialect;
 import org.babyfish.jimmer.sql.ast.PropExpression;
 import org.babyfish.jimmer.sql.ast.table.spi.AbstractTypedTable;
 import org.junit.jupiter.api.Test;
-import ydb.jimmer.dialect.model.type.json.YdbJsonTable;
+import ydb.jimmer.dialect.model.type.ydbJson.YdbJsonTable;
 import ydb.jimmer.dialect.model.type.ydbBool.YdbBooleanClassTable;
 import ydb.jimmer.dialect.model.type.ydbBool.YdbBooleanTable;
 import ydb.jimmer.dialect.model.type.ydbDate32.YdbDateTable;
@@ -110,16 +110,6 @@ public class DataTypeTest extends YdbTest {
                     }
             );
         }
-    }
-
-    @Test
-    public void jsonTest() {
-        String[] valuesToInsert = new String[]{"Json(@@{\"a\":1,\"b\":null}@@)"};
-        String[] expectedValues = new String[]{"{\"a\":1,\"b\":null}"};
-
-        typeTest("ydb_json", "Json",
-                YdbJsonTable.$, YdbJsonTable.$.value(),
-                valuesToInsert, expectedValues);
     }
 
     @Test
@@ -280,6 +270,16 @@ public class DataTypeTest extends YdbTest {
 
         typeTest("ydb_duration", "Interval64",
                 YdbDurationTable.$, YdbDurationTable.$.value(),
+                valuesToInsert, expectedValues);
+    }
+
+    @Test
+    public void jsonTest() {
+        String[] valuesToInsert = new String[]{"Json(@@{\"a\":1,\"b\":null}@@)"};
+        String[] expectedValues = new String[]{"{\"a\":1,\"b\":null}"};
+
+        typeTest("ydb_json", "Json",
+                YdbJsonTable.$, YdbJsonTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 

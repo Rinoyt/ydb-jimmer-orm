@@ -101,6 +101,10 @@ public class YdbDialect extends DefaultDialect {
                 .appendId();
     }
 
+    public void batchUpdate(UpdateContext ctx) {
+        update(ctx.sql("BATCH "));
+    }
+
     @Override
     public void upsert(UpsertContext ctx) {
         if (ctx.isUpdateIgnored() || !ctx.hasUpdatedColumns()) {
@@ -124,6 +128,10 @@ public class YdbDialect extends DefaultDialect {
                     .appendInsertingValues()
                     .leave();
         }
+    }
+
+    public void bulkUpsert(UpsertContext ctx) {
+        upsert(ctx.sql("BULK "));
     }
 
     @Override

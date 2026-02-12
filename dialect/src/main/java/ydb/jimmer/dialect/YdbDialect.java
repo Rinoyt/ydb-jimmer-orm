@@ -6,7 +6,6 @@ import org.babyfish.jimmer.sql.ast.impl.query.ForUpdate;
 import org.babyfish.jimmer.sql.ast.impl.render.AbstractSqlBuilder;
 import org.babyfish.jimmer.sql.dialect.DefaultDialect;
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,21 +52,6 @@ public class YdbDialect extends DefaultDialect {
     @Override
     public boolean isTableOfSubQueryMutable() {
         return false;
-    }
-
-    @Override
-    public Class<?> getJsonBaseType() {
-        return JSONObject.class;
-    }
-
-    @Override
-    public @Nullable Object jsonToBaseValue(@Nullable String json) {
-        return json == null ? new JSONObject() : new JSONObject(json);
-    }
-
-    @Override
-    public @Nullable String baseValueToJson(@Nullable Object baseValue) {
-        return baseValue == null ? null : baseValue.toString();
     }
 
     @Override

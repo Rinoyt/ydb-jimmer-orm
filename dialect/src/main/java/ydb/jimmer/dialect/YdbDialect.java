@@ -9,56 +9,52 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class YdbDialect extends DefaultDialect {
     @Override
     public String sqlType(Class<?> elementType) {
-        if (elementType == String.class) {
+        if (elementType == boolean.class || elementType == Boolean.class) {
+            return "Bool";
+        } else if (elementType == byte.class || elementType == Byte.class) {
+            return "Int8";
+        } else if (elementType == short.class || elementType == Short.class) {
+            return "Int16";
+        } else if (elementType == int.class || elementType == Integer.class || elementType == LocalTime.class || elementType == Time.class) {
+            return "Int32";
+        } else if (elementType == long.class || elementType == Long.class || elementType == BigInteger.class) {
+            return "Int64";
+        } else if (elementType == float.class || elementType == Float.class) {
+            return "Float";
+        } else if (elementType == double.class || elementType == Double.class) {
+            return "Double";
+        } else if (elementType == String.class) {
+            return "Utf8";
+        } else if (elementType == byte[].class) {
             return "String";
         } else if (elementType == UUID.class) {
             return "Uuid";
-        } else if (elementType == boolean.class) {
-            return "Bool";
-        } else if (elementType == byte.class) {
-            return "Int8";
-        } else if (elementType == short.class) {
-            return "Int16";
-        } else if (elementType == int.class) {
-            return "Int32";
-        } else if (elementType == long.class) {
-            return "Int64";
-        } else if (elementType == float.class) {
-            return "Float";
-        } else if (elementType == double.class) {
-            return "Double";
-        } else if (elementType == BigDecimal.class) {
-            return "Decimal(35, 35)";
-        } else if (elementType == Date.class) {
-            return "Date";
-        } else if (elementType == LocalDate.class) {
+        } else if (elementType == Date.class || elementType == LocalDate.class) {
             return "Date32";
-        } else if (elementType == Time.class || elementType == OffsetTime.class) {
-            return "Timestamp";
-        } else if (elementType == LocalTime.class
-                || elementType == java.util.Date.class
-                || elementType == Timestamp.class) {
+        } else if (elementType == LocalDateTime.class) {
+            return "Datetime64";
+        } else if (elementType == java.util.Date.class || elementType == Timestamp.class || elementType == Instant.class) {
             return "Timestamp64";
-        } else if (elementType == LocalDateTime.class || elementType == OffsetDateTime.class) {
-            return "DateTime64";
-        } else if (elementType == ZonedDateTime.class) {
-            return "TzDateTime64";
+        } else if (elementType == BigDecimal.class) {
+            return "Decimal(22, 9)";
+        } else if (elementType == Duration.class) {
+            return "Interval64";
         } else {
             return null;
         }

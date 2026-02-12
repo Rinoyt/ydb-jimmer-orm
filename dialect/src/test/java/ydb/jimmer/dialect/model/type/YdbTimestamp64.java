@@ -5,7 +5,7 @@ import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Table;
 
-import java.time.LocalTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "ydb_timestamp64")
@@ -15,5 +15,5 @@ public interface YdbTimestamp64 {
     int getId();
 
     @Column(name = "value")
-    LocalTime value();
+    Instant value();
 }

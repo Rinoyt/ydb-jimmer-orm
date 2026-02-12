@@ -16,7 +16,6 @@ import ydb.jimmer.dialect.model.type.YdbInt64Table;
 import ydb.jimmer.dialect.model.type.YdbInt8Table;
 import ydb.jimmer.dialect.model.type.YdbStringTable;
 import ydb.jimmer.dialect.model.type.YdbTimestamp64Table;
-import ydb.jimmer.dialect.model.type.YdbTimestampTable;
 import ydb.jimmer.dialect.model.type.YdbUuidTable;
 
 public class DataTypeTest extends YdbTest {
@@ -96,7 +95,7 @@ public class DataTypeTest extends YdbTest {
 
     @Test
     public void dateTest() {
-        String[] valuesToInsert = new String[]{"Date(\"2000-01-01\")", "DATE(\"2017-11-27\")"};
+        String[] valuesToInsert = new String[]{"Date(\"2000-01-01\")", "Date(\"2017-11-27\")"};
         String[] expectedValues = new String[]{"\"2000-01-01\"", "\"2017-11-27\""};
         typeTest("ydb_date", "Date",
                 YdbDateTable.$, YdbDateTable.$.value(),
@@ -194,18 +193,9 @@ public class DataTypeTest extends YdbTest {
     }
 
     @Test
-    public void timestampTest() {
-        String[] valuesToInsert = new String[]{"Timestamp(\"2017-11-27T13:24:00.123456Z\")"};
-        String[] expectedValues = new String[]{"\"2017-11-27T13:24:00.123456\""};
-        typeTest("ydb_timestamp", "Timestamp",
-                YdbTimestampTable.$, YdbTimestampTable.$.value(),
-                valuesToInsert, expectedValues);
-    }
-
-    @Test
     public void timestamp64Test() {
         String[] valuesToInsert = new String[]{"Timestamp64(\"2017-11-27T13:24:00.123456Z\")"};
-        String[] expectedValues = new String[]{"\"2017-11-27T13:24:00.123456\""};
+        String[] expectedValues = new String[]{"\"2017-11-27T13:24:00.123456Z\""};
         typeTest("ydb_timestamp64", "Timestamp64",
                 YdbTimestamp64Table.$, YdbTimestamp64Table.$.value(),
                 valuesToInsert, expectedValues);

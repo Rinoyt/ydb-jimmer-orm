@@ -3,6 +3,7 @@ package ydb.jimmer.dialect;
 import org.babyfish.jimmer.sql.ast.PropExpression;
 import org.babyfish.jimmer.sql.ast.table.spi.AbstractTypedTable;
 import org.junit.jupiter.api.Test;
+import ydb.jimmer.dialect.model.type.ydbEnum.YdbEnumTable;
 import ydb.jimmer.dialect.model.type.ydbJson.YdbJsonTable;
 import ydb.jimmer.dialect.model.type.ydbBool.YdbBooleanClassTable;
 import ydb.jimmer.dialect.model.type.ydbBool.YdbBooleanTable;
@@ -173,6 +174,16 @@ public class DataTypeTest extends YdbTest {
 
         typeTest("ydb_double_class", "Double",
                 YdbDoubleClassTable.$, YdbDoubleClassTable.$.value(),
+                valuesToInsert, expectedValues);
+    }
+
+    @Test
+    public void enumTest() {
+        String[] valuesToInsert = new String[]{"\"ONE\"", "\"TWO\""};
+        String[] expectedValues = new String[]{"\"ONE\"", "\"TWO\""};
+
+        typeTest("ydb_enum", "Utf8",
+                YdbEnumTable.$, YdbEnumTable.$.value(),
                 valuesToInsert, expectedValues);
     }
 

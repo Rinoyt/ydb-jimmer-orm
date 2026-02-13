@@ -28,10 +28,8 @@ public class YdbTest {
     private static final JSqlClient yqlClient;
 
     static {
-        yqlClient = JSqlClient.newBuilder()
+        yqlClient = YqlClientBuilder.getBuilder()
                 .setExecutor(executor)
-                .setDialect(new YdbDialect())
-                .addScalarProvider(new DurationProvider())
                 .build();
     }
 

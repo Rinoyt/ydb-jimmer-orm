@@ -1,7 +1,6 @@
 package ydb.jimmer.dialect;
 
 import org.babyfish.jimmer.sql.JSqlClient;
-import org.babyfish.jimmer.sql.ast.query.TypedRootQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.core.io.UrlResource;
@@ -9,7 +8,6 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import tech.ydb.test.junit5.YdbHelperExtension;
-import ydb.jimmer.dialect.scalar.DurationProvider;
 import ydb.jimmer.dialect.sqlMonitor.ExecutorMonitor;
 
 import java.net.URL;
@@ -17,14 +15,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.function.Consumer;
 
-public class YdbTest {
+public abstract class AbstractTest {
     @RegisterExtension
     private static final YdbHelperExtension ydb = new YdbHelperExtension();
 
-    private static final ExecutorMonitor executor = new ExecutorMonitor();
+    protected static final ExecutorMonitor executor = new ExecutorMonitor();
     private static final JSqlClient yqlClient;
 
     static {
@@ -39,7 +35,7 @@ public class YdbTest {
 
     protected void initDatabase() {
         try (Connection connection = DriverManager.getConnection(getJdbcURL())) {
-            URL dropTablesUrl = YdbTest.class.getClassLoader().getResource("database-drop-tables-ydb.sql");
+            URL dropTablesUrl = AbstractTest.class.getClassLoader().getResource("database-drop-tables-ydb.sql");
             if (dropTablesUrl == null) {
                 throw new IllegalStateException("Cannot load 'database-drop-tables-ydb.sql'");
             }
@@ -49,7 +45,7 @@ public class YdbTest {
                 //
             }
 
-            URL url = YdbTest.class.getClassLoader().getResource("database-ydb.sql");
+            URL url = AbstractTest.class.getClassLoader().getResource("database-ydb.sql");
             if (url == null) {
                 throw new IllegalStateException("Cannot load 'database-ydb.sql'");
             }
@@ -71,7 +67,7 @@ public class YdbTest {
                 "*/");
     }
 
-    private String getJdbcURL() {
+    protected String getJdbcURL() {
         StringBuilder jdbc = new StringBuilder("jdbc:ydb:")
                 .append(ydb.useTls() ? "grpcs://" : "grpc://")
                 .append(ydb.endpoint())
@@ -85,26 +81,13 @@ public class YdbTest {
         return jdbc.toString();
     }
 
-    public <R> void executeAndExpect(TypedRootQuery<R> query, Consumer<QueryTestContext> block) {
-        List<R> rows = connectAndExecute(true, query);
-        block.accept(new QueryTestContext(executor.getLogs(), rows));
-    }
-
-    protected <R> List<R> connectAndExecute(boolean rollback, TypedRootQuery<R> query) {
-        try (Connection connection = DriverManager.getConnection(getJdbcURL())) {
-            connection.setAutoCommit(!rollback);
-            try {
-                return query.execute(connection);
-            } finally {
-                if (rollback) {
-                    connection.rollback();
-                }
-            }
-        } catch (SQLException e) {
-            Assertions.fail("Database threw an exception: " + e.getMessage());
-        }
-
-        return null;
+    protected void createTable(String tableName, String typeName) {
+        executeSql(
+                "CREATE TABLE " + tableName + "(" +
+                        "id Int8," +
+                        "value " + typeName + "," +
+                        "PRIMARY KEY (id)" +
+                        ")");
     }
 
     protected void executeSql(String sql) {

@@ -1,10 +1,9 @@
-package ydb.jimmer.dialect;
+package ydb.jimmer.dialect.dataTypeTest;
 
 import org.babyfish.jimmer.sql.ast.PropExpression;
 import org.babyfish.jimmer.sql.ast.table.spi.AbstractTypedTable;
 import org.junit.jupiter.api.Test;
-import ydb.jimmer.dialect.model.type.ydbEnum.YdbEnumTable;
-import ydb.jimmer.dialect.model.type.ydbJson.YdbJsonTable;
+import ydb.jimmer.dialect.AbstractSelectTest;
 import ydb.jimmer.dialect.model.type.ydbBool.YdbBooleanClassTable;
 import ydb.jimmer.dialect.model.type.ydbBool.YdbBooleanTable;
 import ydb.jimmer.dialect.model.type.ydbDate32.YdbDateTable;
@@ -13,6 +12,7 @@ import ydb.jimmer.dialect.model.type.ydbDatetime64.YdbLocalDateTimeTable;
 import ydb.jimmer.dialect.model.type.ydbDecimal.YdbBigDecimalTable;
 import ydb.jimmer.dialect.model.type.ydbDouble.YdbDoubleClassTable;
 import ydb.jimmer.dialect.model.type.ydbDouble.YdbDoubleTable;
+import ydb.jimmer.dialect.model.type.ydbEnum.YdbEnumTable;
 import ydb.jimmer.dialect.model.type.ydbFloat.YdbFloatClassTable;
 import ydb.jimmer.dialect.model.type.ydbFloat.YdbFloatTable;
 import ydb.jimmer.dialect.model.type.ydbInt16.YdbShortClassTable;
@@ -27,6 +27,7 @@ import ydb.jimmer.dialect.model.type.ydbInt64.YdbLongTable;
 import ydb.jimmer.dialect.model.type.ydbInt8.YdbByteClassTable;
 import ydb.jimmer.dialect.model.type.ydbInt8.YdbByteTable;
 import ydb.jimmer.dialect.model.type.ydbInterval64.YdbDurationTable;
+import ydb.jimmer.dialect.model.type.ydbJson.YdbJsonTable;
 import ydb.jimmer.dialect.model.type.ydbString.YdbByteArrayTable;
 import ydb.jimmer.dialect.model.type.ydbTimestamp64.YdbInstantTable;
 import ydb.jimmer.dialect.model.type.ydbTimestamp64.YdbTimestampTable;
@@ -34,16 +35,7 @@ import ydb.jimmer.dialect.model.type.ydbTimestamp64.YdbUtilDateTable;
 import ydb.jimmer.dialect.model.type.ydbUtf8.YdbStringTable;
 import ydb.jimmer.dialect.model.type.ydbUuid.YdbUuidTable;
 
-public class DataTypeTest extends YdbTest {
-    private void createTable(String tableName, String typeName) {
-        executeSql(
-                "CREATE TABLE " + tableName + "(" +
-                        "id Int8," +
-                        "value " + typeName + "," +
-                        "PRIMARY KEY (id)" +
-                        ")");
-    }
-
+public class SelectDataTypeTest extends AbstractSelectTest {
     private void insert(String tableName, String... values) {
         if (values.length == 0) {
             return;
@@ -58,14 +50,6 @@ public class DataTypeTest extends YdbTest {
         executeSql(sql.toString());
     }
 
-    /**
-     *
-     * @param typeName
-     * @param table
-     * @param prop
-     * @param valuesToInsert
-     * @param expectedValues expected and sorted (ASC) return values of the query
-     */
     private void typeTest(String tableName,
                           String typeName,
                           AbstractTypedTable<?> table,

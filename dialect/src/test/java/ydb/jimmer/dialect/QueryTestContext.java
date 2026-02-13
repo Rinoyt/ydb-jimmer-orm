@@ -4,10 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.babyfish.jimmer.jackson.ImmutableModule;
+import org.babyfish.jimmer.sql.ast.mutation.MutationResult;
+import org.babyfish.jimmer.sql.collection.TypedList;
 import org.junit.jupiter.api.Assertions;
 import ydb.jimmer.dialect.sqlMonitor.QueryLog;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QueryTestContext {
@@ -21,12 +25,23 @@ public class QueryTestContext {
 
     private final List<QueryLog> logs;
     private final List<?> rows;
+    private final MutationResult result;
+    private final Throwable throwable;
 
     private int index = 0;
 
     public QueryTestContext(List<QueryLog> logs, List<?> rows) {
         this.logs = logs;
         this.rows = rows;
+        result = null;
+        throwable = null;
+    }
+
+    public QueryTestContext(List<QueryLog> logs, MutationResult result, Throwable throwable) {
+        this.logs = logs;
+        this.rows = new ArrayList<>();
+        this.result = result;
+        this.throwable = throwable;
     }
 
     public void nextStatement() {
@@ -38,6 +53,30 @@ public class QueryTestContext {
                 sql.replace("--->", ""),
                 logs.get(index).getSql(),
                 "statements[" + index + "].sql");
+    }
+
+    public void variables(Object ... values) {
+        Assertions.assertEquals(
+                values.length,
+                logs.get(index).getVariablesList().get(0).size(),
+                "statements[" + index + "].variables.size is error, actual variables: " +
+                        logs.get(index).getVariablesList().get(0)
+        );
+        for (int i = 0; i < values.length; i++) {
+            Object expect = values[i];
+
+            Object actual = logs.get(index).getVariablesList().get(0).get(i);
+
+            Assertions.assertEquals(
+                    expect,
+                    actual,
+                    "statements[" + index + "].variables[" + i + "] is error, " +
+                            "expected variables: " +
+                            Arrays.toString(values) +
+                            ", actual variables: " +
+                            actual
+            );
+        }
     }
 
     public void rows(String json) {

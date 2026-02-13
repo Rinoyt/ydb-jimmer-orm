@@ -9,8 +9,7 @@ public final class YqlClientBuilder {
     public static JSqlClient.Builder getBuilder() {
         return JSqlClient.newBuilder()
                 .setDialect(new YdbDialect())
-                .addScalarProvider(new DurationProvider())
-                .setCacheOperator(new UuidTransactionCacheOperator());
+                .addScalarProvider(new DurationProvider());
     }
 
     public static JSqlClient getYqlClient() {

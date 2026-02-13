@@ -5,7 +5,7 @@ import ydb.jimmer.dialect.model.StudentTable;
 
 import java.sql.SQLException;
 
-public class SelectTest extends YdbTest {
+public class SelectTest extends AbstractSelectTest {
     @Test
     public void OneEntityTest() throws SQLException {
         initDatabase();

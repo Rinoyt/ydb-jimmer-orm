@@ -50,47 +50,32 @@ public class QueryTestContext {
 
     public void sql(String sql) {
         Assertions.assertEquals(
-                sql.replace("--->", "").toLowerCase(),
-                logs.get(index).getSql().toLowerCase(),
+                sql.replace("--->", ""),
+                logs.get(index).getSql(),
                 "statements[" + index + "].sql");
     }
 
-    public void variables(Object[][] values) {
+    public void variables(Object ... values) {
         Assertions.assertEquals(
                 values.length,
-                logs.get(index).getVariablesList().size(),
-                "statements[" + index + "] actual batch size = " +
-                        logs.get(index).getVariablesList().size() +
-                        ", but expected batch size = " +
-                        values.length
+                logs.get(index).getVariablesList().get(0).size(),
+                "statements[" + index + "].variables.size is error, actual variables: " +
+                        logs.get(index).getVariablesList().get(0)
         );
-
         for (int i = 0; i < values.length; i++) {
+            Object expect = values[i];
+
+            Object actual = logs.get(index).getVariablesList().get(0).get(i);
+
             Assertions.assertEquals(
-                    values[i].length,
-                    logs.get(index).getVariablesList().get(i).size(),
-                    "statements[" + index + "].batch[" + i + "] actual number of variables = " +
-                            logs.get(index).getVariablesList().get(i).size() +
-                            ", but expected number of variables = " +
-                            values[i].length
+                    expect,
+                    actual,
+                    "statements[" + index + "].variables[" + i + "] is error, " +
+                            "expected variables: " +
+                            Arrays.toString(values) +
+                            ", actual variables: " +
+                            actual
             );
-        }
-
-        for (int i = 0; i < values.length; i++) {
-            for (int j = 0; j < values[i].length; j++) {
-                Object expect = values[i][j];
-
-                Object actual = logs.get(index).getVariablesList().get(i).get(j);
-
-                Assertions.assertEquals(
-                        expect,
-                        actual,
-                        "statements[" + index + "].batch[" + i + "].variables[" + j + "] actual value = " +
-                                actual +
-                                ", but expected value = " +
-                                expect
-                );
-            }
         }
     }
 
